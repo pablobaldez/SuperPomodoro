@@ -3,6 +3,7 @@ package pablobaldez.github.superpomodoro.domain.workers;
 import pablobaldez.github.superpomodoro.domain.Pomodoro;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * @author Pablo
@@ -12,6 +13,6 @@ public interface DataSource<T> {
 
     Observable<Pomodoro> findAll();
 
-    Completable save(T pomodoro);
+    Completable save(Single<Pomodoro> pomodoroSingle);
 
 }

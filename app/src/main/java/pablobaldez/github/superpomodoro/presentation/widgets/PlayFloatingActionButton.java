@@ -55,9 +55,17 @@ public class PlayFloatingActionButton extends FloatingActionButton {
         setImageResource(R.drawable.ic_vector_play_arrow);
     }
 
-    private void toggle() {
-        setSelected(!isSelected());
-        setImageDrawable(isSelected() ? stopDrawable : playDrawable);
+    public void toggle() {
+        setPlaying(!isPlaying());
+        setImageDrawable(isPlaying() ? stopDrawable : playDrawable);
+    }
+
+    public void setPlaying(boolean playing) {
+        setSelected(playing);
+    }
+
+    public boolean isPlaying() {
+        return isSelected();
     }
 
 }

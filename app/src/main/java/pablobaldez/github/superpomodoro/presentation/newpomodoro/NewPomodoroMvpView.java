@@ -10,6 +10,8 @@ public interface NewPomodoroMvpView {
 
     void showRunningState();
 
-    void showWaitingState();
+    void showFinishedState();
+
+    void showStoppedState();
 
 }

@@ -1,13 +1,15 @@
 package pablobaldez.github.superpomodoro.presentation.newpomodoro;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import pablobaldez.github.superpomodoro.domain.HandlePomodoroUseCase;
 import pablobaldez.github.superpomodoro.domain.UserSettings;
-import rx.functions.Action0;
-import rx.observers.Subscribers;
+import rx.Subscriber;
+import rx.Subscription;
 
 /**
  * @author Pablo
@@ -25,6 +27,7 @@ public class NewPomodoroPresenter {
     private HandlePomodoroUseCase useCase;
 
     private NewPomodoroMvpView view;
+    private Subscription subscription;
 
     @Inject
     public NewPomodoroPresenter(HandlePomodoroUseCase useCase) {
@@ -35,21 +38,39 @@ public class NewPomodoroPresenter {
         this.view = view;
     }
 
-    public void onViewResumed() {
-        view.setPomodoroTime(DEFAULTS.getPomodoroDurationTime());
+    public long getInitialPomodoroTime() {
+        return DEFAULTS.getPomodoroDurationTime();
     }
 
     public void onRunClicked() {
-        useCase.start()
-                .subscribe(time -> view.setPomodoroTime(time));
+        subscription = useCase.start().subscribe(new Subscriber<Long>() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                view.showRunningState();
+            }
+
+            @Override
+            public void onCompleted() {
+                view.showFinishedState();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e("SuperPomodoro", "error on start pomodoro", e);
+            }
+
+            @Override
+            public void onNext(Long time) {
+                view.setPomodoroTime(time);
+            }
+        });
     }
 
     public void onStopClicked() {
-        useCase.stop().subscribe(new Action0() {
-            @Override
-            public void call() {
-                view.showWaitingState();
-            }
-        });
+        if(subscription != null) {
+            subscription.unsubscribe();
+            view.showStoppedState();
+        }
     }
 }

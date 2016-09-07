@@ -1,6 +1,5 @@
 package pablobaldez.github.superpomodoro.domain;
 
-import rx.Completable;
 import rx.Observable;
 
 /**
@@ -10,7 +9,5 @@ import rx.Observable;
 public interface HandlePomodoroUseCase {
 
     Observable<Long> start();
-
-    Completable stop();
 
 }

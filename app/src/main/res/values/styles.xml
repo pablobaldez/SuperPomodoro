@@ -7,5 +7,6 @@
 
     <style name="TimerStyle.New" parent="TimerStyle">
         <item name="android:textSize">56sp</item>
+        <item name="android:enabled">false</item>
     </style>
 </resources>

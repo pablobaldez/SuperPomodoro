@@ -9,11 +9,9 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:id="@+id/timer"
-        android:max="30"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginTop="@dimen/timer_top_margin"
         tools:text="25:00"
-        android:textSize="56sp"
         style="@style/TimerStyle.New"/>
 
     <pablobaldez.github.superpomodoro.presentation.widgets.PlayFloatingActionButton

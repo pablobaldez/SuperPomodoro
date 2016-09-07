@@ -10,6 +10,8 @@ import pablobaldez.github.superpomodoro.data.ObservableCountDown;
 import pablobaldez.github.superpomodoro.domain.workers.DataSource;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
+import rx.functions.Action0;
 import rx.observers.Subscribers;
 import rx.schedulers.Schedulers;
 
@@ -20,7 +22,7 @@ import rx.schedulers.Schedulers;
 public class HandlePomodoroUseCaseImpl implements HandlePomodoroUseCase{
 
     private static final UserSettings DEFAULTS = new UserSettings(
-            TimeUnit.MINUTES.toMillis(25),
+            TimeUnit.SECONDS.toMillis(3),
             TimeUnit.MINUTES.toMillis(5),
             TimeUnit.MINUTES.toMillis(15),
             4
@@ -29,7 +31,6 @@ public class HandlePomodoroUseCaseImpl implements HandlePomodoroUseCase{
     private final ObservableCountDown counter;
     private final DataSource<Pomodoro> dataSource;
 
-    private Observable<Long> runningObservable;
     private Pomodoro currentPomodoro;
 
     @Inject
@@ -42,23 +43,14 @@ public class HandlePomodoroUseCaseImpl implements HandlePomodoroUseCase{
     public Observable<Long> start() {
         currentPomodoro = new Pomodoro();
         currentPomodoro.setTook(new Date());
-        runningObservable = counter.start(DEFAULTS.getPomodoroDurationTime())
+        return counter.start(DEFAULTS.getPomodoroDurationTime())
                 .doOnNext(currentPomodoro::incrementWorkedTime)
-                .doOnCompleted(this::savePomodoroAction)
                 .doOnUnsubscribe(this::savePomodoroAction);
-        return runningObservable;
-    }
-
-    @Override
-    public Completable stop() {
-        if(runningObservable == null || currentPomodoro == null) {
-            throw new IllegalStateException("You have to start before to stop");
-        }
-        return dataSource.save(currentPomodoro);
     }
 
     private void savePomodoroAction() {
-        dataSource.save(currentPomodoro)
+        currentPomodoro.finish();
+        dataSource.save(Single.just(currentPomodoro))
                 .subscribeOn(Schedulers.io())
                 .subscribe(Subscribers.empty());
     }
