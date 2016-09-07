@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/timer"
+        android:max="30"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="@dimen/timer_top_margin"
+        tools:text="25:00"
+        android:textSize="56sp"
+        style="@style/TimerStyle.New"/>
+
+    <pablobaldez.github.superpomodoro.presentation.widgets.PlayFloatingActionButton
+        android:id="@+id/play_stop_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/play_end_margin"
+        android:layout_marginEnd="@dimen/play_end_margin"
+        android:layout_marginBottom="60dp"
+        app:fabSize="normal" />
+
+
+</FrameLayout>

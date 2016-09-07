@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Super Pomodoro</string>
+    <string name="new_">New</string>
+    <string name="history">History</string>
+    <string name="main_activity_title">POMODORO</string>
+    <string name="finished">Finished</string>
+    <string name="stopped">Stopped</string>
+    <string name="today">Finished</string>
+    <string name="yesterday">Finished</string>
+    <string name="ago">Ago</string>
+</resources>
