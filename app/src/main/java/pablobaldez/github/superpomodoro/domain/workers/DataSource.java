@@ -1,6 +1,8 @@
 package pablobaldez.github.superpomodoro.domain.workers;
 
-import java.util.List;
+import pablobaldez.github.superpomodoro.domain.Pomodoro;
+import rx.Completable;
+import rx.Observable;
 
 /**
  * @author Pablo
@@ -8,8 +10,8 @@ import java.util.List;
  */
 public interface DataSource<T> {
 
-    List<T> findAll();
+    Observable<Pomodoro> findAll();
 
-    void save(T pomodoro);
+    Completable save(T pomodoro);
 
 }

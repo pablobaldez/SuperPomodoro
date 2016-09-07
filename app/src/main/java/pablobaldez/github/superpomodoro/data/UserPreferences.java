@@ -3,6 +3,9 @@ package pablobaldez.github.superpomodoro.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import javax.inject.Inject;
+
+import pablobaldez.github.superpomodoro.domain.UserSettings;
 import pablobaldez.github.superpomodoro.domain.workers.Preferences;
 import rx.Completable;
 import rx.Single;
@@ -21,7 +24,7 @@ public class UserPreferences  implements Preferences<UserSettings> {
 
     private final SharedPreferences preferences;
 
-
+    @Inject
     public UserPreferences(Context context) {
         preferences = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
     }

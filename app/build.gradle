@@ -36,11 +36,18 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:support-v13:24.1.1'
     // rx
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'com.trello:rxlifecycle-navi:0.7.0'
-    // animated buttons
+
+    // icons
     compile 'com.joanzapata.iconify:android-iconify-material:2.2.2'
-    compile 'com.android.support:support-v13:24.1.1'
+
+    // dagger
+    apt 'com.google.dagger:dagger-compiler:2.5'
+    apt 'com.google.guava:guava:19.0'
+    compile 'com.google.dagger:dagger:2.5'
+    provided 'javax.annotation:jsr250-api:1.0'
 }

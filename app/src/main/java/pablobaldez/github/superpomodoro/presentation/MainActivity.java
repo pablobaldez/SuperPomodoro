@@ -1,5 +1,6 @@
 package pablobaldez.github.superpomodoro.presentation;
 
+import android.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -8,6 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import pablobaldez.github.superpomodoro.R;
+import pablobaldez.github.superpomodoro.SuperPomodoroApplication;
+import pablobaldez.github.superpomodoro.injection.AppComponent;
+import pablobaldez.github.superpomodoro.injection.PresentationComponent;
+import pablobaldez.github.superpomodoro.presentation.newpomodoro.NewPomodoroFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,4 +40,20 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+    public Fragment createNewPomodoroFragment() {
+        NewPomodoroFragment fragment = new NewPomodoroFragment();
+        buildPresentationComponent().inject(fragment);
+        return fragment;
+    }
+
+    private PresentationComponent buildPresentationComponent() {
+        return getAppComponent().plus();
+    }
+
+    private AppComponent getAppComponent() {
+        return SuperPomodoroApplication.getAppComponent(this);
+    }
+
+
 }

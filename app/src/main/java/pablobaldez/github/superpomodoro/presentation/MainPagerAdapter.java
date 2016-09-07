@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import pablobaldez.github.superpomodoro.R;
-import pablobaldez.github.superpomodoro.presentation.newpomodoro.NewPomodoroFragment;
 
 /**
  * @author Pablo
@@ -26,8 +25,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return NEW_POMODORO_FRAGMENT_TAB == position ?  new NewPomodoroFragment() :
-                new NewPomodoroFragment();
+        return NEW_POMODORO_FRAGMENT_TAB == position ?  activity.createNewPomodoroFragment() :
+                activity.createNewPomodoroFragment();
     }
 
     @Override

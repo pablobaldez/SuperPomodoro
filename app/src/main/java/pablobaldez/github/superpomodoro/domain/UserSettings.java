@@ -1,4 +1,4 @@
-package pablobaldez.github.superpomodoro.data;
+package pablobaldez.github.superpomodoro.domain;
 
 /**
  * @author Pablo
@@ -24,7 +24,7 @@ public class UserSettings {
         return pomodoroDurationTime;
     }
 
-    void setPomodoroDurationTime(long pomodoroDurationTime) {
+    public void setPomodoroDurationTime(long pomodoroDurationTime) {
         this.pomodoroDurationTime = pomodoroDurationTime;
     }
 
@@ -32,7 +32,7 @@ public class UserSettings {
         return normalIntervalDuration;
     }
 
-    void setNormalIntervalDuration(long normalIntervalDuration) {
+    public void setNormalIntervalDuration(long normalIntervalDuration) {
         this.normalIntervalDuration = normalIntervalDuration;
     }
 
@@ -40,7 +40,7 @@ public class UserSettings {
         return longIntervalDuration;
     }
 
-    void setLongIntervalDuration(long longIntervalDuration) {
+    public void setLongIntervalDuration(long longIntervalDuration) {
         this.longIntervalDuration = longIntervalDuration;
     }
 
@@ -48,7 +48,7 @@ public class UserSettings {
         return timesToLongInterval;
     }
 
-    void setTimesToLongInterval(int timesToLongInterval) {
+    public void setTimesToLongInterval(int timesToLongInterval) {
         this.timesToLongInterval = timesToLongInterval;
     }
 }

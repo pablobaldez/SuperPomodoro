@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import pablobaldez.github.superpomodoro.R;
 import pablobaldez.github.superpomodoro.presentation.utils.TimeFormatUtils;
 
@@ -24,7 +26,7 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new NewPomodoroPresenter(null);
+        setRetainInstance(true);
         presenter.attachView(this);
     }
 
@@ -60,5 +62,10 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView{
     @Override
     public void showWaitingState() {
 
+    }
+
+    @Inject
+    public void setPresenter(NewPomodoroPresenter presenter) {
+        this.presenter = presenter;
     }
 }

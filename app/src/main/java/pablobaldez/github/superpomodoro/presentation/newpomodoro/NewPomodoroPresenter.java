@@ -1,10 +1,13 @@
 package pablobaldez.github.superpomodoro.presentation.newpomodoro;
 
-import android.os.CountDownTimer;
-
 import java.util.concurrent.TimeUnit;
 
-import pablobaldez.github.superpomodoro.domain.workers.DataSource;
+import javax.inject.Inject;
+
+import pablobaldez.github.superpomodoro.domain.HandlePomodoroUseCase;
+import pablobaldez.github.superpomodoro.domain.UserSettings;
+import rx.functions.Action0;
+import rx.observers.Subscribers;
 
 /**
  * @author Pablo
@@ -12,14 +15,20 @@ import pablobaldez.github.superpomodoro.domain.workers.DataSource;
  */
 public class NewPomodoroPresenter {
 
-    private static final long POMODORO_DURATION = TimeUnit.MINUTES.toMillis(25);
+    private static final UserSettings DEFAULTS = new UserSettings(
+            TimeUnit.MINUTES.toMillis(25),
+            TimeUnit.MINUTES.toMillis(5),
+            TimeUnit.MINUTES.toMillis(15),
+            4
+    );
 
-    private final DataSource dataSource;
+    private HandlePomodoroUseCase useCase;
 
     private NewPomodoroMvpView view;
 
-    public NewPomodoroPresenter(DataSource dataSource) {
-        this.dataSource = dataSource;
+    @Inject
+    public NewPomodoroPresenter(HandlePomodoroUseCase useCase) {
+        this.useCase = useCase;
     }
 
     public void attachView(NewPomodoroMvpView view) {
@@ -27,24 +36,20 @@ public class NewPomodoroPresenter {
     }
 
     public void onViewResumed() {
-        view.setPomodoroTime(POMODORO_DURATION);
+        view.setPomodoroTime(DEFAULTS.getPomodoroDurationTime());
     }
 
     public void onRunClicked() {
-        new CountDownTimer(POMODORO_DURATION, 1000) {
-            @Override
-            public void onTick(long time) {
-                view.setPomodoroTime(time);
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
+        useCase.start()
+                .subscribe(time -> view.setPomodoroTime(time));
     }
 
     public void onStopClicked() {
-
+        useCase.stop().subscribe(new Action0() {
+            @Override
+            public void call() {
+                view.showWaitingState();
+            }
+        });
     }
 }
