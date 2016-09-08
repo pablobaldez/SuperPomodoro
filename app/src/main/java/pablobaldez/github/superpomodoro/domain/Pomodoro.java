@@ -56,4 +56,24 @@ public class Pomodoro extends RealmObject{
     public void setDefinedDuration(long definedDuration) {
         this.definedDuration = definedDuration;
     }
+
+    public Date getTook() {
+        return took;
+    }
+
+    public long getWorkedTime() {
+        return workedTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public long getDefinedDuration() {
+        return definedDuration;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
 }

@@ -26,7 +26,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return NEW_POMODORO_FRAGMENT_TAB == position ?  activity.createNewPomodoroFragment() :
-                activity.createNewPomodoroFragment();
+                activity.createHistoryFragment();
     }
 
     @Override

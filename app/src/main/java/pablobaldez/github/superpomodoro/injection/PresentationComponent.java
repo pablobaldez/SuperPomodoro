@@ -1,7 +1,7 @@
 package pablobaldez.github.superpomodoro.injection;
 
-import dagger.Component;
 import dagger.Subcomponent;
+import pablobaldez.github.superpomodoro.presentation.history.HistoryFragment;
 import pablobaldez.github.superpomodoro.presentation.newpomodoro.NewPomodoroFragment;
 
 /**
@@ -13,5 +13,7 @@ import pablobaldez.github.superpomodoro.presentation.newpomodoro.NewPomodoroFrag
 public interface PresentationComponent {
 
     void inject(NewPomodoroFragment fragment);
+
+    void inject(HistoryFragment fragment);
 
 }

@@ -12,6 +12,7 @@ import pablobaldez.github.superpomodoro.R;
 import pablobaldez.github.superpomodoro.SuperPomodoroApplication;
 import pablobaldez.github.superpomodoro.injection.AppComponent;
 import pablobaldez.github.superpomodoro.injection.PresentationComponent;
+import pablobaldez.github.superpomodoro.presentation.history.HistoryFragment;
 import pablobaldez.github.superpomodoro.presentation.newpomodoro.NewPomodoroFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
     public Fragment createNewPomodoroFragment() {
         NewPomodoroFragment fragment = new NewPomodoroFragment();
+        buildPresentationComponent().inject(fragment);
+        return fragment;
+    }
+
+    public Fragment createHistoryFragment() {
+        HistoryFragment fragment = new HistoryFragment();
         buildPresentationComponent().inject(fragment);
         return fragment;
     }

@@ -5,10 +5,18 @@
     <string name="main_activity_title">POMODORO</string>
     <string name="finished">Finished</string>
     <string name="stopped">Stopped</string>
-    <string name="today">Finished</string>
-    <string name="yesterday">Finished</string>
-    <string name="ago">Ago</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
+    <string name="days_ago">%d days ago</string>
+    <string name="now">Now</string>
+    <string name="m_ago">%dm ago</string>
+    <string name="h_ago">%dh ago</string>
+
 
     <string name="message_interval_confirmation">Do you want to start the interval?</string>
     <string name="message_restart_confirmation">Do you want to restart the pomodoro?</string>
+
+    <string name="default_error_message">Please try again</string>
+    <string name="message_empty_pomodoro">You don\'t have history</string>
 </resources>

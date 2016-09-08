@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?listPreferredItemHeightLarge"
+    android:paddingLeft="?android:listPreferredItemPaddingLeft"
+    android:paddingStart="?android:listPreferredItemPaddingStart"
+    android:paddingEnd="?android:listPreferredItemPaddingEnd"
+    android:paddingRight="?android:listPreferredItemPaddingRight"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/worked_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:textColor="@android:color/black"
+        android:layout_toLeftOf="@+id/took"
+        android:layout_toStartOf="@+id/took"
+        tools:text="25:00" />
+
+    <TextView
+        android:id="@+id/finished"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/worked_time"
+        android:layout_toLeftOf="@+id/took"
+        android:layout_toStartOf="@+id/took"
+        tools:text="Finished"/>
+
+    <TextView
+        android:id="@+id/took"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        tools:text="1m ago"/>
+
+</RelativeLayout>
