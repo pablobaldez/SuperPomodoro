@@ -8,4 +8,7 @@
     <string name="today">Finished</string>
     <string name="yesterday">Finished</string>
     <string name="ago">Ago</string>
+
+    <string name="message_interval_confirmation">Do you want to start the interval?</string>
+    <string name="message_restart_confirmation">Do you want to restart the pomodoro?</string>
 </resources>

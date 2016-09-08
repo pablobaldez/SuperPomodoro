@@ -10,6 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import javax.inject.Inject;
 
 import pablobaldez.github.superpomodoro.R;
@@ -77,6 +79,7 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
     @Override
     public void showFinishedState() {
         timerTextView.setText(TimeFormatUtils.mmSS(0));
+        playButton.toggle();
         timerTextView.setEnabled(false);
         timerTextView.startAnimation(blinkAnimation);
     }
@@ -84,8 +87,12 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
     @Override
     public void showStoppedState() {
         timerTextView.setEnabled(false);
-        playButton.toggle();
         timerTextView.startAnimation(blinkAnimation);
+    }
+
+    @Override
+    public void showIntervalFinishedState() {
+
     }
 
     @Inject
@@ -100,6 +107,11 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
 
     @Override
     public void onAnimationEnd(Animation animation) {
+        new MaterialDialog.Builder(getActivity())
+                .content(R.string.message_interval_confirmation)
+                .positiveText(android.R.string.yes)
+                .negativeText(android.R.string.no)
+                .show();
         timerTextView.setText(TimeFormatUtils.mmSS(presenter.getInitialPomodoroTime()));
         playButton.setEnabled(true);
     }

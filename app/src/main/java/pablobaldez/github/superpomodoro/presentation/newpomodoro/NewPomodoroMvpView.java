@@ -14,4 +14,6 @@ public interface NewPomodoroMvpView {
 
     void showStoppedState();
 
+    void showIntervalFinishedState();
+
 }

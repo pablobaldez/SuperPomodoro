@@ -1,15 +1,15 @@
 package pablobaldez.github.superpomodoro.presentation.newpomodoro;
 
-import android.util.Log;
-
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import pablobaldez.github.superpomodoro.domain.HandlePomodoroUseCase;
 import pablobaldez.github.superpomodoro.domain.UserSettings;
-import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Action1;
+import rx.observers.Subscribers;
+
 
 /**
  * @author Pablo
@@ -42,29 +42,24 @@ public class NewPomodoroPresenter {
         return DEFAULTS.getPomodoroDurationTime();
     }
 
+    public void onReceiveIntervalConfirmation(boolean confirmed) {
+        view.showRunningState();
+        if(confirmed) {
+            useCase.startInterval().subscribe(Subscribers.create(
+                    view::setPomodoroTime,
+                    throwable -> {}
+            ));
+        }
+
+    }
+
     public void onRunClicked() {
-        subscription = useCase.start().subscribe(new Subscriber<Long>() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                view.showRunningState();
-            }
-
-            @Override
-            public void onCompleted() {
-                view.showFinishedState();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("SuperPomodoro", "error on start pomodoro", e);
-            }
-
-            @Override
-            public void onNext(Long time) {
-                view.setPomodoroTime(time);
-            }
-        });
+        view.showRunningState();
+        subscription = useCase.start().subscribe(Subscribers.create(
+                view::setPomodoroTime,
+                throwable -> {},
+                () -> view.showFinishedState())
+        );
     }
 
     public void onStopClicked() {

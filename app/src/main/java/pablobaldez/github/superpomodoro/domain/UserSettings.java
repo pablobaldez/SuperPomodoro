@@ -10,6 +10,7 @@ public class UserSettings {
     private long normalIntervalDuration;
     private long longIntervalDuration;
     private int timesToLongInterval;
+    private int currentPomodorosRuns;
 
     public UserSettings(long pomodoroDurationTime, long normalIntervalDuration, long longIntervalDuration, int timesToLongInterval) {
         this.pomodoroDurationTime = pomodoroDurationTime;
@@ -50,5 +51,13 @@ public class UserSettings {
 
     public void setTimesToLongInterval(int timesToLongInterval) {
         this.timesToLongInterval = timesToLongInterval;
+    }
+
+    public int getCurrentPomodorosRuns() {
+        return currentPomodorosRuns;
+    }
+
+    public void setCurrentPomodorosRuns(int currentPomodorosRuns) {
+        this.currentPomodorosRuns = currentPomodorosRuns;
     }
 }

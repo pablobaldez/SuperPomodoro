@@ -21,6 +21,7 @@ public class UserPreferences  implements Preferences<UserSettings> {
     private static final String NORMAL_INTERVAL_DURATION = "NORMAL_INTERVAL_DURATION";
     private static final String LONG_INTERVAL_DURATION = "LONG_INTERVAL_DURATION";
     private static final String TIMES_TO_LONG_INTERVAL = "TIMES_TO_LONG_INTERVAL";
+    private static final String POMODOROS_COUNTER = "POMODOROS_COUNTER";
 
     private final SharedPreferences preferences;
 
@@ -55,6 +56,25 @@ public class UserPreferences  implements Preferences<UserSettings> {
         edit.putLong(NORMAL_INTERVAL_DURATION, userSettings.getNormalIntervalDuration());
         edit.putLong(LONG_INTERVAL_DURATION, userSettings.getLongIntervalDuration());
         edit.putInt(TIMES_TO_LONG_INTERVAL, userSettings.getTimesToLongInterval());
+        edit.apply();
+    }
+
+    @Override
+    public Completable incrementPomodoro() {
+        return Completable.defer(() -> Completable.fromAction(this::incrementPomodoroAction));
+    }
+
+    public void incrementPomodoroAction() {
+        SharedPreferences.Editor edit = preferences.edit();
+        int counter = get(POMODOROS_COUNTER, 0);
+        int timesToNext = get(TIMES_TO_LONG_INTERVAL, 1);
+        if(counter == timesToNext) {
+            edit.putInt(POMODOROS_COUNTER, 0);
+        }
+        else {
+            counter++;
+            edit.putInt(POMODOROS_COUNTER, counter);
+        }
         edit.apply();
     }
 

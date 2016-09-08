@@ -1,6 +1,7 @@
 package pablobaldez.github.superpomodoro.domain;
 
 import rx.Observable;
+import rx.Single;
 
 /**
  * @author Pablo
@@ -9,5 +10,9 @@ import rx.Observable;
 public interface HandlePomodoroUseCase {
 
     Observable<Long> start();
+
+    Single<Boolean> isTimeForInterval();
+
+    Observable<Long> startInterval();
 
 }

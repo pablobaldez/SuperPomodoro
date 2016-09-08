@@ -8,10 +8,10 @@ import javax.inject.Inject;
 
 import pablobaldez.github.superpomodoro.data.ObservableCountDown;
 import pablobaldez.github.superpomodoro.domain.workers.DataSource;
-import rx.Completable;
+import pablobaldez.github.superpomodoro.domain.workers.Preferences;
 import rx.Observable;
 import rx.Single;
-import rx.functions.Action0;
+import rx.functions.Func1;
 import rx.observers.Subscribers;
 import rx.schedulers.Schedulers;
 
@@ -30,27 +30,46 @@ public class HandlePomodoroUseCaseImpl implements HandlePomodoroUseCase{
 
     private final ObservableCountDown counter;
     private final DataSource<Pomodoro> dataSource;
+    private final Preferences<UserSettings> preferences;
 
     private Pomodoro currentPomodoro;
 
     @Inject
-    public HandlePomodoroUseCaseImpl(ObservableCountDown counter, DataSource<Pomodoro> dataSource) {
+    public HandlePomodoroUseCaseImpl(ObservableCountDown counter,
+                                     DataSource<Pomodoro> dataSource,
+                                     Preferences<UserSettings> preferences) {
         this.counter = counter;
         this.dataSource = dataSource;
+        this.preferences = preferences;
     }
 
     @Override
     public Observable<Long> start() {
         currentPomodoro = new Pomodoro();
         currentPomodoro.setTook(new Date());
-        return counter.start(DEFAULTS.getPomodoroDurationTime())
-                .doOnNext(currentPomodoro::incrementWorkedTime)
-                .doOnUnsubscribe(this::savePomodoroAction);
+        return preferences.get(Single.just(DEFAULTS))
+                .flatMapObservable(userSettings ->
+                        counter.start(userSettings.getPomodoroDurationTime())
+                                .doOnNext(currentPomodoro::incrementWorkedTime)
+                                .doOnUnsubscribe(this::savePomodoroAction)
+                );
+    }
+
+    @Override
+    public Single<Boolean> isTimeForInterval() {
+        return null;
+    }
+
+    @Override
+    public Observable<Long> startInterval() {
+        return preferences.get(Single.just(DEFAULTS))
+                .flatMapObservable(userSettings -> counter.start(userSettings.getNormalIntervalDuration()));
     }
 
     private void savePomodoroAction() {
         currentPomodoro.finish();
         dataSource.save(Single.just(currentPomodoro))
+                .mergeWith(preferences.incrementPomodoro())
                 .subscribeOn(Schedulers.io())
                 .subscribe(Subscribers.empty());
     }

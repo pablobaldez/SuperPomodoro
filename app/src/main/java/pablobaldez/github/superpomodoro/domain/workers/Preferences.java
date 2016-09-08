@@ -13,4 +13,6 @@ public interface Preferences<T> {
 
     Completable save(Single<T> toSaveSingle);
 
+    Completable incrementPomodoro();
+
 }
