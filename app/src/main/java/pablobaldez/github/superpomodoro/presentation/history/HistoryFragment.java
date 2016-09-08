@@ -120,6 +120,14 @@ public class HistoryFragment extends Fragment
     @Override
     public void notifyDataLoaded(int count) {
         itemCount = count;
+        if(itemCount == 0) {
+            emptyTextView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
+        else {
+            emptyTextView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -135,14 +143,6 @@ public class HistoryFragment extends Fragment
     public void hideLoading() {
         progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
-        if(itemCount == 0) {
-            emptyTextView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        }
-        else {
-            emptyTextView.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override

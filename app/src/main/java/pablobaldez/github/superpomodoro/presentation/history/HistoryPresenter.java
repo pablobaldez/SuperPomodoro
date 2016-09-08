@@ -81,13 +81,15 @@ public class HistoryPresenter {
 
     private List<PomodoroGroup> groupPomodoros(List<Pomodoro> list) {
         PomodoroGroup previousGroup = null;
-        int index = 1;
+        int index = 0;
         for(Pomodoro pomodoro: list) {
             Date took = pomodoro.getTook();
             if(previousGroup == null || !isSameDay(took, previousGroup.getDay())) {
                 previousGroup = new PomodoroGroup(pomodoro);
                 days.put(index, pomodoro.getTook());
                 groups.add(previousGroup);
+                index++;
+                pomodoros.put(index, pomodoro);
             }
             else {
                 pomodoros.put(index, pomodoro);
