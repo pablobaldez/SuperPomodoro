@@ -3,6 +3,7 @@ package pablobaldez.github.superpomodoro.presentation.utils;
 import android.content.Context;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +19,7 @@ public final class TimeFormatUtils {
     private static final SimpleDateFormat DAY_FORMAT
             = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
     private static final SimpleDateFormat HOUR_FORMAT
-            = new SimpleDateFormat("hh", Locale.getDefault());
+            = new SimpleDateFormat("hh a", Locale.getDefault());
 
     private TimeFormatUtils(){}
 
@@ -29,33 +30,33 @@ public final class TimeFormatUtils {
     }
 
     public static String getHoursDiff(Context context, Date date) {
-        long millis = date.getTime();
+        long millis = System.currentTimeMillis() - date.getTime();
         long millisInOneHour = TimeUnit.HOURS.toMillis(1);
         long millisInOneMinute = TimeUnit.MINUTES.toMillis(1);
 
-        if ( millis < millisInOneMinute) {
+        if ( millis < 2 *millisInOneMinute) {
             return context.getString(R.string.now);
         }
-        else if(millis < 2 * millisInOneMinute) {
+        else if(millis < 3 * millisInOneMinute) {
             return String.format(Locale.getDefault(), context.getString(R.string.m_ago), 1);
         }
-        else if(millis < 6 * millisInOneMinute) {
+        else if(millis < 7 * millisInOneMinute) {
             return String.format(Locale.getDefault(), context.getString(R.string.m_ago), 5);
         }
-        else if(millis < 11 * millisInOneMinute) {
+        else if(millis < 13 * millisInOneMinute) {
             return String.format(Locale.getDefault(), context.getString(R.string.m_ago), 10);
         }
-        else if(millis < 16 * millisInOneMinute) {
+        else if(millis < 17 * millisInOneMinute) {
             return String.format(Locale.getDefault(), context.getString(R.string.m_ago), 15);
         }
-        else if(millis < 31 * millisInOneMinute) {
+        else if(millis < 32 * millisInOneMinute) {
             return String.format(Locale.getDefault(), context.getString(R.string.m_ago), 30);
         }
         //hour
-        else if (millis < 2 * millisInOneHour) {
+        else if (millis < 3 * millisInOneHour) {
             return String.format(Locale.getDefault(), context.getString(R.string.h_ago), 1);
         }
-        else if (millis < 6 * millisInOneHour) {
+        else if (millis < 7 * millisInOneHour) {
             return String.format(Locale.getDefault(), context.getString(R.string.h_ago), 5);
         }
 
@@ -65,14 +66,14 @@ public final class TimeFormatUtils {
     }
 
     public static String getDaysDiff(Context context, Date date) {
-        long millis = date.getTime();
+        long millis = System.currentTimeMillis() - date.getTime();
         long millisInOneDay = TimeUnit.DAYS.toMillis(1);
         int maxDaysAgo = 10;
 
-        if ( millis < millisInOneDay) {
+        if (isSameDay(new Date(), date)) {
             return context.getString(R.string.today);
         }
-        else if (millis < 2 * millisInOneDay) {
+        else if (millis < millisInOneDay) {
             return context.getString(R.string.yesterday);
         }
         else if (millis < maxDaysAgo * millisInOneDay) {
@@ -82,6 +83,15 @@ public final class TimeFormatUtils {
         else {
             return DAY_FORMAT.format(date);
         }
+    }
+
+    public static boolean isSameDay(Date date1, Date date2) {
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(date1);
+        cal2.setTime(date2);
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
 
 }
