@@ -62,10 +62,8 @@ public class HistoryPresenter {
                 ));
     }
 
+
     private void onStart() {
-        groups.clear();
-        pomodoros.clear();
-        days.clear();
         view.showLoading();
     }
 
@@ -80,6 +78,9 @@ public class HistoryPresenter {
     }
 
     private List<PomodoroGroup> groupPomodoros(List<Pomodoro> list) {
+        groups.clear();
+        pomodoros.clear();
+        days.clear();
         PomodoroGroup previousGroup = null;
         int index = 0;
         for(Pomodoro pomodoro: list) {

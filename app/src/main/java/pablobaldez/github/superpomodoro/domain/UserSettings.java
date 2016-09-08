@@ -1,10 +1,19 @@
 package pablobaldez.github.superpomodoro.domain;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author Pablo
  * @since 06/09/2016
  */
 public class UserSettings {
+
+    public static final UserSettings DEFAULTS = new UserSettings(
+            TimeUnit.MINUTES.toMillis(25),
+            TimeUnit.MINUTES.toMillis(5),
+            TimeUnit.MINUTES.toMillis(5),
+            4
+    );
 
     private long pomodoroDurationTime;
     private long normalIntervalDuration;

@@ -26,6 +26,7 @@ public class ObservableCountDown {
 
                 @Override
                 public void onFinish() {
+                    subscriber.onNext(0L);
                     subscriber.onCompleted();
                 }
             }.start();

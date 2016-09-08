@@ -1,6 +1,7 @@
 package pablobaldez.github.superpomodoro.domain;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -23,10 +24,6 @@ public class Pomodoro extends RealmObject{
     private long definedDuration;
     private boolean finished;
 
-    public long getPrimaryKey() {
-        return primaryKey;
-    }
-
     public void setPrimaryKey(long primaryKey) {
         this.primaryKey = primaryKey;
     }
@@ -39,18 +36,12 @@ public class Pomodoro extends RealmObject{
         this.endTime = endTime;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    public void incrementWorkedTime(long millis) {
-        workedTime += millis;
-    }
-
     public void finish() {
-        endTime = workedTime - definedDuration;
-        workedTime = definedDuration;
-        finished = endTime == 0;
+        workedTime = definedDuration - endTime;
+        finished = workedTime == definedDuration;
+        if(!finished) {
+            workedTime += TimeUnit.SECONDS.toMillis(1);
+        }
     }
 
     public void setDefinedDuration(long definedDuration) {
@@ -63,14 +54,6 @@ public class Pomodoro extends RealmObject{
 
     public long getWorkedTime() {
         return workedTime;
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
-    public long getDefinedDuration() {
-        return definedDuration;
     }
 
     public boolean isFinished() {

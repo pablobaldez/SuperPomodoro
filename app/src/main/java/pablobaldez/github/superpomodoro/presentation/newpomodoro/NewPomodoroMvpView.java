@@ -8,12 +8,16 @@ public interface NewPomodoroMvpView {
 
     void setPomodoroTime(long time);
 
+    void showIntervalTime();
+
     void showRunningState();
 
     void showFinishedState();
 
     void showStoppedState();
 
-    void showIntervalFinishedState();
+    void askForInterval();
+
+    void setCurrentPomodoroDuration(long currentPomodoroDuration);
 
 }

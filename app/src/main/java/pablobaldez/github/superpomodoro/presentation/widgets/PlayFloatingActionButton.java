@@ -8,8 +8,6 @@ import android.util.AttributeSet;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 
-import pablobaldez.github.superpomodoro.R;
-
 /**
  * @author Pablo
  * @since 07/09/2016
@@ -52,7 +50,7 @@ public class PlayFloatingActionButton extends FloatingActionButton {
         Context context = getContext();
         playDrawable = new IconDrawable(context, MaterialIcons.md_play_arrow).colorRes(white);
         stopDrawable = new IconDrawable(context, MaterialIcons.md_stop).colorRes(white);
-        setImageResource(R.drawable.ic_vector_play_arrow);
+        setImageDrawable(isPlaying() ? stopDrawable : playDrawable);
     }
 
     public void toggle() {

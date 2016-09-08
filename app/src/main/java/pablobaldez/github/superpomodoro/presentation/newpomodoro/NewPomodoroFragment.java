@@ -27,8 +27,12 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
     private NewPomodoroPresenter presenter;
 
     private TextView timerTextView;
+    private TextView intervalTextView;
     private PlayFloatingActionButton playButton;
     private Animation blinkAnimation;
+    private Animation intervalAnimation;
+
+    private long currentPomodoroDuration;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,14 +51,17 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         timerTextView = (TextView) view.findViewById(R.id.timer);
+        intervalTextView = (TextView) view.findViewById(R.id.interval_time);
         blinkAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.blink);
+        intervalAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.blink);
         playButton = (PlayFloatingActionButton) view.findViewById(R.id.play_stop_button);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        timerTextView.setText(TimeFormatUtils.mmSS(presenter.getInitialPomodoroTime()));
+        playButton.setEnabled(false);
+        presenter.onViewResumed();
         blinkAnimation.setAnimationListener(this);
         playButton.setOnClickListener(v -> {
             if(playButton.isPlaying()) {
@@ -68,7 +75,16 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
 
     @Override
     public void setPomodoroTime(long time) {
+        if(time == 0){
+            animate();
+        }
         timerTextView.setText(TimeFormatUtils.mmSS(time));
+    }
+
+    @Override
+    public void showIntervalTime() {
+        intervalTextView.setVisibility(View.VISIBLE);
+        intervalTextView.startAnimation(intervalAnimation);
     }
 
     @Override
@@ -78,21 +94,39 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
 
     @Override
     public void showFinishedState() {
+        intervalTextView.setVisibility(View.GONE);
         timerTextView.setText(TimeFormatUtils.mmSS(0));
         playButton.toggle();
-        timerTextView.setEnabled(false);
-        timerTextView.startAnimation(blinkAnimation);
+        animate();
     }
 
     @Override
     public void showStoppedState() {
+        intervalTextView.setVisibility(View.GONE);
+        animate();
+    }
+
+    private synchronized void animate(){
         timerTextView.setEnabled(false);
         timerTextView.startAnimation(blinkAnimation);
     }
 
     @Override
-    public void showIntervalFinishedState() {
+    public void askForInterval() {
+        new MaterialDialog.Builder(getActivity())
+                .content(R.string.message_interval_confirmation)
+                .positiveText(android.R.string.yes)
+                .onPositive((dialog, which) -> presenter.onReceiveIntervalConfirmation(true))
+                .onNegative((dialog, which) -> presenter.onReceiveIntervalConfirmation(false))
+                .negativeText(android.R.string.no)
+                .show();
+    }
 
+    @Override
+    public void setCurrentPomodoroDuration(long currentPomodoroDuration) {
+        playButton.setEnabled(true);
+        this.currentPomodoroDuration = currentPomodoroDuration;
+        timerTextView.setText(TimeFormatUtils.mmSS(currentPomodoroDuration));
     }
 
     @Inject
@@ -107,12 +141,7 @@ public class NewPomodoroFragment extends Fragment implements NewPomodoroMvpView,
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        new MaterialDialog.Builder(getActivity())
-                .content(R.string.message_interval_confirmation)
-                .positiveText(android.R.string.yes)
-                .negativeText(android.R.string.no)
-                .show();
-        timerTextView.setText(TimeFormatUtils.mmSS(presenter.getInitialPomodoroTime()));
+        timerTextView.setText(TimeFormatUtils.mmSS(currentPomodoroDuration));
         playButton.setEnabled(true);
     }
 

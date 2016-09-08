@@ -1,7 +1,5 @@
 package pablobaldez.github.superpomodoro.data;
 
-import android.util.Log;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,7 +32,9 @@ public class RealmPomodoroDataSource implements DataSource<Pomodoro> {
             Realm realm = Realm.getDefaultInstance();
             List<Pomodoro> list = realm.where(Pomodoro.class)
                     .findAll().sort(Pomodoro.TOOK, Sort.DESCENDING);
-            return realm.copyFromRealm(list);
+            List<Pomodoro> toReturn = realm.copyFromRealm(list);
+            realm.close();
+            return toReturn;
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
@@ -53,9 +53,8 @@ public class RealmPomodoroDataSource implements DataSource<Pomodoro> {
             long pk = generatePK(realm);
             realm.beginTransaction();
             pomodoro.setPrimaryKey(pk);
-            realm.copyToRealm(pomodoro);
+            realm.insert(pomodoro);
             realm.commitTransaction();
-            Log.d("pablo", "saving");
         } catch (Exception e) {
             realm.cancelTransaction();
             throw Exceptions.propagate(e);

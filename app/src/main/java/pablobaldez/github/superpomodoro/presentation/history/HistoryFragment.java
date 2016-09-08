@@ -32,9 +32,9 @@ public class HistoryFragment extends Fragment
     private static final int DAY_VIEW_TYPE = 1;
 
     private int itemCount;
+    private boolean loading;
 
     private HistoryPresenter presenter;
-
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -67,7 +67,11 @@ public class HistoryFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        presenter.load();
+        loadContent();
+    }
+
+    public void onSelect(){
+        loadContent();
     }
 
     private void setupRecyclerView(View view) {
@@ -80,7 +84,14 @@ public class HistoryFragment extends Fragment
 
     private void setupSwipe(View view) {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(() -> presenter.load());
+        swipeRefreshLayout.setColorSchemeResources(R.color.running);
+        swipeRefreshLayout.setOnRefreshListener(this::loadContent);
+    }
+
+    private void loadContent(){
+        if(isAdded() && !loading) {
+            presenter.load();
+        }
     }
 
     @Override
@@ -133,6 +144,7 @@ public class HistoryFragment extends Fragment
 
     @Override
     public void showLoading() {
+        loading = true;
         emptyTextView.setVisibility(View.GONE);
         if(!swipeRefreshLayout.isRefreshing()) {
             progressBar.setVisibility(View.VISIBLE);
@@ -141,6 +153,7 @@ public class HistoryFragment extends Fragment
 
     @Override
     public void hideLoading() {
+        loading = false;
         progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
     }
